@@ -1,0 +1,22 @@
+{"name": "qowaa-fit-reviews",
+ "version": "1.0.0",
+ "private": true,
+ "scripts": {
+   "dev": "next dev",
+   "build": "next build",
+   "start": "next start",
+   "test": "jest"
+ },
+ "dependencies": {
+   "next": "latest",
+   "react": "latest",
+   "react-dom": "latest",
+   "@supabase/supabase-js": "latest",
+   "cloudinary": "latest"
+ },
+ "devDependencies": {
+   "jest": "latest",
+   "@testing-library/react": "latest",
+   "@testing-library/jest-dom": "latest"
+ }
+}
