@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Form</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        .rating-stars { display: flex; margin-bottom: 20px; }
+        .star { font-size: 30px; cursor: pointer; }
+        .hidden { display: none; }
+        .drag-drop {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .success-message { color: green; margin-top: 20px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Review Form</h1>
+        <form id="reviewForm">
+            <input type="text" id="name" placeholder="Name" required><br><br>
+            <input type="email" id="email" placeholder="Email" required><br><br>
+            <div class="rating-stars">
+                <span class="star" data-value="1">⭐</span>
+                <span class="star" data-value="2">⭐</span>
+                <span class="star" data-value="3">⭐</span>
+                <span class="star" data-value="4">⭐</span>
+                <span class="star" data-value="5">⭐</span>
+            </div>
+            <input type="hidden" id="rating" name="rating" required>
+            <input type="text" id="title" placeholder="Review Title" required><br><br>
+            <textarea id="reviewText" placeholder="Your review..." required></textarea><br>
+            <div class="char-counter">Character count: <span id="charCount">0</span></div><br>
+            <div class="drag-drop" id="photoDropzone">Drag & drop photo upload here</div>
+            <input type="file" id="photoUpload" class="hidden"><br>
+            <div class="drag-drop" id="videoDropzone">Drag & drop video upload here</div>
+            <input type="file" id="videoUpload" class="hidden"><br>
+            <button type="submit">Submit Review</button>
+        </form>
+        <div class="success-message hidden">Thank you for your review! Use promo code: <span id="promoCode"></span></div>
+        <div class="error hidden"></div>
+    </div>
+    <script>
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', function() {
+                document.getElementById('rating').value = this.getAttribute('data-value');
+                document.querySelectorAll('.star').forEach(s => s.style.color = '');
+                for (let i = 0; i < this.getAttribute('data-value'); i++) {
+                    document.querySelectorAll('.star')[i].style.color = 'gold';
+                }
+            });
+        });
+
+        const reviewText = document.getElementById('reviewText');
+        reviewText.addEventListener('input', () => {
+            document.getElementById('charCount').innerText = reviewText.value.length;
+        });
+
+        const uploadHandler = (event, type) => {
+            const files = event.dataTransfer.files;
+            if (files.length) {
+                const formData = new FormData();
+                for (let file of files) {
+                    formData.append(type, file);
+                }
+                // TODO: Upload files to Cloudinary
+            }
+        };
+
+        document.getElementById('photoDropzone').addEventListener('drop', (event) => {
+            event.preventDefault();
+            uploadHandler(event, 'photo');
+        });
+
+        document.getElementById('videoDropzone').addEventListener('drop', (event) => {
+            event.preventDefault();
+            uploadHandler(event, 'video');
+        });
+
+        document.getElementById('reviewForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // TODO: Handle form submission, integrate with Cloudinary, and show promo code
+            document.querySelector('.success-message').classList.remove('hidden');
+            document.getElementById('promoCode').innerText = 'PROMOCODE2026';
+        });
+    </script>
+</body>
+</html>
